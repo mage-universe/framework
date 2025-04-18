@@ -1,0 +1,87 @@
+{
+  "name": "mage-universe/framework",
+  "keywords": [
+    "omatech",
+    "mage",
+    "framework"
+  ],
+  "homepage": "https://github.com/mage-universe/framework",
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Omatech",
+      "email": "devel@omatech.com"
+    }
+  ],
+  "require": {
+    "php": "^8.3",
+    "bacon/bacon-qr-code": "^2.0.8",
+    "lambdish/phunctional": "^2.1.0",
+    "laravel/framework": "^11.3.1",
+    "laravel/passport": "^12.0.3",
+    "robthree/twofactorauth": "^2.1",
+    "vaimo/composer-patches": "^5.1.2"
+  },
+  "require-dev": {
+    "brianium/paratest": "^7.4.3",
+    "infection/infection": "^0.27.11",
+    "mockery/mockery": "^1.6.11",
+    "nunomaduro/collision": "^8.1.1",
+    "orchestra/testbench": "^9.0.3",
+    "php-mock/php-mock": "^2.5",
+    "phpmd/phpmd": "^2.15",
+    "phpunit/phpunit": "^10.5.17",
+    "psalm/plugin-mockery": "^1.1",
+    "psalm/plugin-phpunit": "^0.18.4",
+    "psalm/plugin-laravel": "^2.11",
+    "roave/security-advisories": "dev-latest",
+    "symfony/var-dumper": "^7.0.6",
+    "symplify/easy-coding-standard": "^12.1.14",
+    "vimeo/psalm": "^5.23.1"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "Mage\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "analyse": "vendor/bin/psalm",
+    "mess": "vendor/bin/phpmd src github phpmd.xml",
+    "lint": "vendor/bin/ecs check",
+    "lint:fix": "@lint --fix",
+    "test:phpunit": "vendor/bin/testbench package:test --display-warnings --display-deprecations --stop-on-warning",
+    "test:infection": "vendor/bin/infection --threads=1 --skip-initial-tests --coverage=build --show-mutations --logger-github",
+    "test": ["Composer\\Config::disableProcessTimeout", "@test:phpunit", "@test:infection"]
+  },
+  "extra": {
+    "patches": {
+      "laravel/octane": {
+        "src/ApplicationFactory.php": "patches/laravel/octane/ApplicationFactory.php.patch"
+      }
+    },
+    "laravel": {
+      "dont-discover": [
+        "laravel/passport",
+        "spatie/laravel-ray"
+      ]
+    }
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "allow-plugins": {
+      "infection/extension-installer": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "vaimo/composer-patches": true
+    }
+  }
+}

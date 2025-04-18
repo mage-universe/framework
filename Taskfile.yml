@@ -1,0 +1,29 @@
+version: '3'
+
+env:
+  COMPOSE_PROJECT_NAME: mage_framework
+  UID:
+    sh: 'if [ `echo $(id -u) -lt 1000` ]; then echo 1000; else echo $(id -u); fi'
+  GID:
+    sh: 'if [ `echo $(id -g) -lt 1000` ]; then echo 1000; else echo $(id -g); fi'
+
+tasks:
+  build:
+    cmds:
+    - UID=$UID GID=$GID docker-compose -f .docker/docker-compose.yml -f .docker/docker-compose.dev.yml -p $COMPOSE_PROJECT_NAME build --compress --pull --no-cache --force-rm
+  up:
+    cmds:
+    - UID=$UID GID=$GID docker-compose -f .docker/docker-compose.yml -f .docker/docker-compose.dev.yml -p $COMPOSE_PROJECT_NAME up -d mysql
+  down:
+    cmds:
+    - UID=$UID GID=$GID docker-compose -f .docker/docker-compose.yml -f .docker/docker-compose.dev.yml -p $COMPOSE_PROJECT_NAME down
+  clear:
+    cmds:
+    - UID=$UID GID=$GID docker-compose -f .docker/docker-compose.yml -f .docker/docker-compose.dev.yml -p $COMPOSE_PROJECT_NAME down --rmi all
+  php:
+    cmds:
+    - UID=$UID GID=$GID docker-compose -f .docker/docker-compose.yml -f .docker/docker-compose.dev.yml -p $COMPOSE_PROJECT_NAME run --rm --service-ports php {{.CLI_ARGS}}
+  composer:
+    cmds:
+    - task: php
+      vars: {CLI_ARGS: 'composer {{.CLI_ARGS}}'}

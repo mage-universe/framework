@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  php:
+    container_name: ${COMPOSE_PROJECT_NAME}-php
+    environment:
+    - XDEBUG_MODE=coverage
+    - PHP_IDE_CONFIG=serverName=${COMPOSE_PROJECT_NAME}
+    image: ${COMPOSE_PROJECT_NAME}-php
+    build:
+      context: "php"
+      args:
+        UID: ${UID}
+        GID: ${GID}
+    networks:
+    - docker
+    volumes:
+    - mysql-socket:/var/run/mysqld
+    - ../:/app
+    - ~/.config/composer/auth.json:/home/app/.composer/auth.json
+    - ~/.ssh/:/home/app/.ssh:ro
+
+  mysql:
+    container_name: ${COMPOSE_PROJECT_NAME}-mysql
+    image: ${COMPOSE_PROJECT_NAME}-mysql
+    environment:
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_DATABASE=${COMPOSE_PROJECT_NAME}
+    build:
+      context: "mysql"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
+    networks:
+      docker:
+        aliases:
+        - mysql.localhost
+    volumes:
+    - mysql:/var/lib/mysql
+    - mysql-socket:/var/run/mysqld
+
+volumes:
+  mysql:
+  mysql-socket:
+
+networks:
+  docker:
+    name: ${COMPOSE_PROJECT_NAME}-network

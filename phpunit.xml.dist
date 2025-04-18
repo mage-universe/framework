@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+    bootstrap="vendor/autoload.php"
+    backupGlobals="false"
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutChangesToGlobalState="true"
+    beStrictAboutTestsThatDoNotTestAnything="false"
+    beStrictAboutTodoAnnotatedTests="true"
+    colors="true"
+    processIsolation="false"
+    stopOnNotice="true"
+    stopOnError="true"
+    stopOnFailure="true"
+    stopOnIncomplete="true"
+    stopOnSkipped="true"
+    stopOnRisky="true"
+    stopOnWarning="true"
+    executionOrder="random"
+    resolveDependencies="true"
+    cacheDirectory=".phpunit.cache">
+    <coverage>
+        <report>
+            <clover outputFile="build/clover.xml"/>
+            <html outputDirectory="build/coverage-html"/>
+            <xml outputDirectory="build/coverage-xml"/>
+            <text outputFile="build/coverage.txt"/>
+        </report>
+    </coverage>
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
+    <testsuites>
+        <testsuite name="Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <logging>
+        <junit outputFile="build/junit.xml"/>
+    </logging>
+    <php>
+        <env name="APP_KEY" value="base64:QCGShWZKvrpszyhCH22msMALYIw1W9hnjYevBVU8kzo="/>
+        <env name="PASSPORT_PRIVATE_KEY" value="/app/tests/Framework/Auth/Data/oauth-private.key"/>
+        <env name="PASSPORT_PUBLIC_KEY" value="/app/tests/Framework/Auth/Data/oauth-public.key"/>
+    </php>
+</phpunit>

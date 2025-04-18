@@ -1,0 +1,12 @@
+@package laravel/octane
+
+--- a/src/ApplicationFactory.php
++++ b/src/ApplicationFactory.php
+@@ -23,6 +23,7 @@ class ApplicationFactory
+         $paths = [
+             $this->basePath.'/.laravel/app.php',
+             $this->basePath.'/bootstrap/app.php',
++            $this->basePath.'/storage/framework/app.php'
+         ];
+
+         foreach ($paths as $path) {
